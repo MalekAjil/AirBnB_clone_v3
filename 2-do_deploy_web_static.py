@@ -1,30 +1,21 @@
 #!/usr/bin/python3
-"""
-Fabric script based on the file 1-pack_web_static.py that distributes an
-archive to the web servers
-"""
 
-from fabric.api import put, run, env
-from os.path import exists
-env.hosts = ['142.44.167.228', '144.217.246.195']
+from fabric.api import *
+from os.path import basename, splitext
+env.hosts = ['35.231.46.174', '35.185.29.97']
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/holberton'
 
 
 def do_deploy(archive_path):
-    """distributes an archive to the web servers"""
-    if exists(archive_path) is False:
-        return False
-    try:
-        file_n = archive_path.split("/")[-1]
-        no_ext = file_n.split(".")[0]
-        path = "/data/web_static/releases/"
-        put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, no_ext))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
-        run('rm /tmp/{}'.format(file_n))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
-        run('rm -rf {}{}/web_static'.format(path, no_ext))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
-        return True
-    except:
-        return False
+    """deploys web_static.tgz to web-01 & web-02
+    """
+    arch_w_ext = basename(archive_path)
+    arch_base = splitext(arch_w_ext)[0]
+    path = "/data/web_static/releases/"
+    put(archive_path, "/tmp/")
+    run("tar -xzf /tmp/{} -C {}".format(arch_w_ext, path))
+    run("rm /tmp/{}".format(arch_w_ext))
+    run("mv {1}web_static {1}{0}".format(arch_base, path))
+    run("rm -rf /data/web_static/current")
+    run("ln -s {}{} /data/web_static/current".format(path, arch_base))
