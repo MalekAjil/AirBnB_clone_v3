@@ -76,6 +76,7 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
+        """get object by its class and id"""
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
@@ -88,4 +89,5 @@ class DBStorage:
         return None
 
     def count(self, cls=None):
+        """Count class objects"""
         return len(all(cls))

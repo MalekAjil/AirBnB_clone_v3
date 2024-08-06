@@ -70,6 +70,7 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
+        """get object by its class and id"""
         if cls is not None:
             new_dict = {}
             for key, value in self.__objects.items():
@@ -80,5 +81,6 @@ class FileStorage:
         return None
 
     def count(self, cls=None):
+        """counts objects by class"""
         return len(all(cls))
 
