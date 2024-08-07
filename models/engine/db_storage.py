@@ -85,7 +85,7 @@ class DBStorage:
                     if obj.id == id:
                         key = obj.__class__.__name__ + '.' + obj.id
                         new_dict[key] = obj
-                        return (new_dict)        
+                        return (new_dict)
         return None
 
     def count(self, cls=None):

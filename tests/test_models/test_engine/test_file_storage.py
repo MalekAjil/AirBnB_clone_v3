@@ -126,5 +126,3 @@ class TestFileStorage(unittest.TestCase):
         """Test that save properly get objects to file.json"""
         storage = FileStotage()
         print(storage.count())
-
-
